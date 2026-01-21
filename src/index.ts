@@ -4,7 +4,7 @@ import { handlerReadiness } from "./handlers/get_healthz.js";
 import { middlewareLogResponses } from "./middleware/mw_logger.js";
 import { middlewareMetricsInc } from "./middleware/mw_server_hits.js";
 import { handlerMetrics } from "./handlers/get_metrics.js";
-import { handlerMetricsReset } from "./handlers/get_reset_metrics.js";
+import { handlerMetricsReset } from "./handlers/post_reset_metrics.js";
 
 const app = express();
 const PORT = 8080;
@@ -16,7 +16,7 @@ app.use("/app", express.static("./src/app"));
 
 app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
-app.get("/admin/reset", handlerMetricsReset);
+app.post("/admin/reset", handlerMetricsReset);
 
 app.use(middlewareLogResponses);
 
