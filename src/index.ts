@@ -12,6 +12,7 @@ const PORT = 8080;
 
 config.fileserverHits = 0;
 
+app.use(express.json());
 app.use("/app", middlewareMetricsInc);
 app.use("/app", express.static("./src/app"));
 
