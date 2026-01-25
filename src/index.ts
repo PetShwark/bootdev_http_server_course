@@ -6,6 +6,8 @@ import { middlewareMetricsInc } from "./middleware/mw_server_hits.js";
 import { handlerMetrics } from "./handlers/get_metrics.js";
 import { handlerMetricsReset } from "./handlers/post_reset_metrics.js";
 import { handlerValidateChirp } from "./handlers/post_validate_chirp.js";
+import { handlerError } from "./middleware/mw_error_handler.js";
+
 
 const app = express();
 const PORT = 8080;
@@ -22,6 +24,8 @@ app.post("/admin/reset", handlerMetricsReset);
 app.post("/api/validate_chirp", handlerValidateChirp);
 
 app.use(middlewareLogResponses);
+
+app.use(handlerError);
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
