@@ -1,4 +1,7 @@
 import express from "express";
+import postgres from "postgres";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { drizzle } from "drizzle-orm/postgres-js";
 import { config } from "./config.js";
 import { handlerReadiness } from "./handlers/get_healthz.js";
 import { middlewareLogResponses } from "./middleware/mw_logger.js";
@@ -12,7 +15,11 @@ import { handlerError } from "./middleware/mw_error_handler.js";
 const app = express();
 const PORT = 8080;
 
-config.fileserverHits = 0;
+config.apiConfig.fileserverHits = 0;
+
+// Make sure db is up-to-date
+const migrationClient = postgres(config.dbConfig.dbURL, { max: 1 });
+await migrate(drizzle(migrationClient), config.dbConfig.migrationConfig);
 
 app.use(express.json());
 app.use("/app", middlewareMetricsInc);
