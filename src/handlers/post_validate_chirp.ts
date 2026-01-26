@@ -1,17 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { BadRequestError } from "../middleware/mw_error_defs.js";
 
-interface RequestData {
-    body: string;
-}
-
 const badWords = ["kerfuffle", "sharbert", "fornax"];
-
-function isRequestData(data: unknown): data is RequestData {
-    if (typeof data !== 'object' || data === null) return false;
-    const obj = data as Record<string, unknown>;
-    return typeof obj.body === 'string';
-}
 
 function stripBadWords(input: string, badWordsList: string[]): string {
     const words = input.split(" ").map((word) => {

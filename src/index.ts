@@ -10,6 +10,7 @@ import { handlerMetrics } from "./handlers/get_metrics.js";
 import { handlerMetricsReset } from "./handlers/post_reset_metrics.js";
 import { handlerValidateChirp } from "./handlers/post_validate_chirp.js";
 import { handlerError } from "./middleware/mw_error_handler.js";
+import { handlerUsers } from "./handlers/post_users.js";
 
 
 const app = express();
@@ -29,6 +30,7 @@ app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerMetricsReset);
 app.post("/api/validate_chirp", handlerValidateChirp);
+app.post("/api/users", handlerUsers);
 
 app.use(middlewareLogResponses);
 

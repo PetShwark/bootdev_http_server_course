@@ -1,11 +1,5 @@
 import { BadRequestError } from "../middleware/mw_error_defs.js";
 const badWords = ["kerfuffle", "sharbert", "fornax"];
-function isRequestData(data) {
-    if (typeof data !== 'object' || data === null)
-        return false;
-    const obj = data;
-    return typeof obj.body === 'string';
-}
 function stripBadWords(input, badWordsList) {
     const words = input.split(" ").map((word) => {
         return badWordsList.includes(word.toLowerCase()) ? "****" : word;

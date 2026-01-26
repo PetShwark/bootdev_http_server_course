@@ -2,7 +2,7 @@ import { NotFoundError } from "./middleware/mw_error_defs.js";
 import type { MigrationConfig } from "drizzle-orm/migrator";
 
 export const migrationConfig: MigrationConfig = {
-    migrationsFolder: "./src/lib/db/migrations",
+    migrationsFolder: "./src/lib/db",
 };
 
 export type DBConfig = {
@@ -11,6 +11,7 @@ export type DBConfig = {
 }
 
 export type APIConfig = {
+    platform: string;
     fileserverHits: number;
 };
 
@@ -30,6 +31,6 @@ function envOrThrow(key: string): string {
 process.loadEnvFile();
 
 export const config: ProjConfig = {
-    apiConfig: { fileserverHits: 0 },
+    apiConfig: { fileserverHits: 0, platform: envOrThrow('PLATFORM') },
     dbConfig: { dbURL: envOrThrow('DB_URL'), migrationConfig: migrationConfig }
 };
