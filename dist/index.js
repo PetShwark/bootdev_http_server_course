@@ -9,7 +9,7 @@ import { middlewareMetricsInc } from "./middleware/mw_server_hits.js";
 import { handlerMetrics } from "./handlers/get_metrics.js";
 import { handlerMetricsReset } from "./handlers/post_reset_metrics.js";
 import { handlerError } from "./middleware/mw_error_handler.js";
-import { handlerUsers } from "./handlers/post_users.js";
+import { handlerUsers, handleLogin } from "./handlers/post_users.js";
 import { handlerChirps } from "./handlers/post_chirps.js";
 import { handlerGetChirp, handlerGetChirps } from "./handlers/get_chirps.js";
 const app = express();
@@ -28,6 +28,7 @@ app.get("/api/chirps/:chirpId", handlerGetChirp);
 app.post("/admin/reset", handlerMetricsReset);
 app.post("/api/chirps", handlerChirps);
 app.post("/api/users", handlerUsers);
+app.post("/api/login", handleLogin);
 app.use(middlewareLogResponses);
 app.use(handlerError);
 app.listen(PORT, () => {
