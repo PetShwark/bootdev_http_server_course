@@ -1,5 +1,8 @@
-import { BadRequestError } from "../middleware/mw_error_defs.js";
+import { BadRequestError, NotAuthorizedError } from "../middleware/mw_error_defs.js";
 import { createChirp } from "../lib/db/queries/chirps.js";
+import { validateJWT, getBearerToken } from "../lib/auth/auth.js";
+import { config } from "../config.js";
+import { selectUserById } from "../lib/db/queries/users.js";
 const badWords = ["kerfuffle", "sharbert", "fornax"];
 function stripBadWords(input, badWordsList) {
     const words = input.split(" ").map((word) => {
@@ -10,10 +13,16 @@ function stripBadWords(input, badWordsList) {
 const maxChirpLength = 140;
 export async function handlerChirps(req, res, next) {
     try {
+        const bearerToken = getBearerToken(req);
+        const tokenUserId = validateJWT(bearerToken, config.apiConfig.jwtSecret);
+        const selectedUser = await selectUserById(tokenUserId);
+        if (!selectedUser) {
+            throw new NotAuthorizedError("User not found for provided token.");
+        }
         if (req.body.body.length <= maxChirpLength) {
             const createdChirp = await createChirp({
                 body: stripBadWords(req.body.body, badWords),
-                userId: req.body.userId
+                userId: tokenUserId
             });
             res.status(201).send(JSON.stringify(createdChirp));
         }
@@ -24,13 +33,4 @@ export async function handlerChirps(req, res, next) {
     catch (err) {
         next(err);
     }
-    // if (isRequestData(req.body)) {
-    //     if (req.body.body.length <= maxChirpLength) {
-    //         res.status(200).send(JSON.stringify({ "cleanedBody": stripBadWords(req.body.body, badWords) }));
-    //     } else {
-    //         res.status(400).send(JSON.stringify({ "error": "Chirp is too long" }));
-    //     }
-    // } else {
-    //     res.status(400).send(JSON.stringify({ "error": "Invalid Chirp format" }));
-    // }
 }

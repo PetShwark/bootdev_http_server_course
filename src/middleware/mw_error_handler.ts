@@ -26,7 +26,7 @@ export function handlerError(
         });
     } else {
         res.status(500).json({
-            error: "Something went wrong on our end",
+            error: err.message,
         });
     }
 }
