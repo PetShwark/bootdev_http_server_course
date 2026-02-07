@@ -28,3 +28,10 @@ export async function deleteChirps() {
         .delete(chirps);
     return result;
 }
+export async function deleteChirp(chirpId) {
+    const [result] = await db
+        .delete(chirps)
+        .where(eq(chirps.id, chirpId))
+        .returning();
+    return result;
+}

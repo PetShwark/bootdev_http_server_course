@@ -15,6 +15,7 @@ import { handlerGetChirp, handlerGetChirps } from "./handlers/get_chirps.js";
 import { handlerRefreshJwt } from "./handlers/post_refresh.js";
 import { handlerRevokeRefreshToken } from "./handlers/post_revoke.js";
 import { handlerUpdateUser } from "./handlers/put_users.js";
+import { handlerDeleteChirp } from "./handlers/delete_chirps.js";
 
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use("/app", middlewareMetricsInc);
 app.use("/app", express.static("./src/app"));
 
+app.delete("/api/chirps/:chirpId", handlerDeleteChirp);
 app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
 app.get("/api/chirps", handlerGetChirps);
