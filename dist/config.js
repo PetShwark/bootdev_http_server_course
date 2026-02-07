@@ -12,6 +12,6 @@ function envOrThrow(key) {
 }
 process.loadEnvFile();
 export const config = {
-    apiConfig: { fileserverHits: 0, platform: envOrThrow('PLATFORM'), jwtSecret: envOrThrow('JWT_SECRET') },
+    apiConfig: { fileserverHits: 0, platform: envOrThrow('PLATFORM'), jwtSecret: envOrThrow('JWT_SECRET'), polkaKey: envOrThrow('POLKA_KEY') },
     dbConfig: { dbURL: envOrThrow('DB_URL'), migrationConfig: migrationConfig }
 };

@@ -46,8 +46,18 @@ export function getBearerToken(req) {
         throw new NotAuthorizedError("Invalid Authorization header format.");
     }
     console.log("Bearer token extracted:", parts[1]);
-    return parts[1];
+    return parts[1].trim();
 }
 export function makeRefreshToken() {
     return crypto.randomBytes(256 / 8).toString("hex");
+}
+export function getAPIKey(req) {
+    const authorizationHeader = req.get("Authorization");
+    if (authorizationHeader) {
+        const parts = authorizationHeader.split(" ");
+        if (parts.length === 2 && parts[0] === "ApiKey") {
+            return parts[1].trim();
+        }
+    }
+    throw new NotAuthorizedError("No API key found in Authorization header.");
 }

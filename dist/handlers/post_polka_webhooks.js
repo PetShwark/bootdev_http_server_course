@@ -1,6 +1,13 @@
 import { selectUserById, upgradeUser } from "../lib/db/queries/users.js";
+import { getAPIKey } from "../lib/auth/auth.js";
+import { NotAuthorizedError } from "../middleware/mw_error_defs.js";
+import { config } from "../config.js";
 export async function postPolkaWebhooks(req, res, next) {
     try {
+        const apiKey = getAPIKey(req);
+        if (apiKey !== config.apiConfig.polkaKey) {
+            throw new NotAuthorizedError("Invalid API key.");
+        }
         const { event, data } = req.body;
         // Log the received event and data for debugging purposes
         console.log(`Received Polka Webhook Event: ${event}`);
