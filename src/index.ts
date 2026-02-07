@@ -14,6 +14,7 @@ import { handlerChirps } from "./handlers/post_chirps.js";
 import { handlerGetChirp, handlerGetChirps } from "./handlers/get_chirps.js";
 import { handlerRefreshJwt } from "./handlers/post_refresh.js";
 import { handlerRevokeRefreshToken } from "./handlers/post_revoke.js";
+import { handlerUpdateUser } from "./handlers/put_users.js";
 
 
 const app = express();
@@ -39,6 +40,7 @@ app.post("/api/users", handlerUsers);
 app.post("/api/login", handleLogin);
 app.post("/api/refresh", handlerRefreshJwt);
 app.post("/api/revoke", handlerRevokeRefreshToken);
+app.put("/api/users", handlerUpdateUser);
 
 app.use(middlewareLogResponses);
 

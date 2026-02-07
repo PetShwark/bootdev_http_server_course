@@ -44,11 +44,11 @@ export function validateJWT(tokenString: string, secret: string): string {
 export function getBearerToken(req: Request): string {
     const authHeader = req.get("Authorization");
     if (!authHeader) {
-        throw new Error("No Authorization header found.");
+        throw new NotAuthorizedError("No Authorization header found.");
     }
     const parts = authHeader.split(" ");
     if (parts.length !== 2 || parts[0] !== "Bearer") {
-        throw new Error("Invalid Authorization header format.");
+        throw new NotAuthorizedError("Invalid Authorization header format.");
     }
     console.log("Bearer token extracted:", parts[1]);
     return parts[1];
