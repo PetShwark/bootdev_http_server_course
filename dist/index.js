@@ -12,6 +12,8 @@ import { handlerError } from "./middleware/mw_error_handler.js";
 import { handlerUsers, handleLogin } from "./handlers/post_users.js";
 import { handlerChirps } from "./handlers/post_chirps.js";
 import { handlerGetChirp, handlerGetChirps } from "./handlers/get_chirps.js";
+import { handlerRefreshJwt } from "./handlers/post_refresh.js";
+import { handlerRevokeRefreshToken } from "./handlers/post_revoke.js";
 const app = express();
 const PORT = 8080;
 config.apiConfig.fileserverHits = 0;
@@ -29,6 +31,8 @@ app.post("/admin/reset", handlerMetricsReset);
 app.post("/api/chirps", handlerChirps);
 app.post("/api/users", handlerUsers);
 app.post("/api/login", handleLogin);
+app.post("/api/refresh", handlerRefreshJwt);
+app.post("/api/revoke", handlerRevokeRefreshToken);
 app.use(middlewareLogResponses);
 app.use(handlerError);
 app.listen(PORT, () => {

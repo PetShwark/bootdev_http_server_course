@@ -1,6 +1,8 @@
 import { hash, verify } from "argon2";
 import { Request } from "express";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { NotAuthorizedError } from "../../middleware/mw_error_defs.js";
 
 export type payload = Pick<jwt.JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -12,9 +14,9 @@ export async function checkPasswordHash(password: string, hash: string): Promise
     return await verify(hash, password);
 }
 
-export function makeJWT(userID: string, expiresIn: number, secret: string): string {
+export function makeJWT(userID: string, expiresInSeconds: number, secret: string): string {
     const payloadIat = Math.floor(Date.now() / 1000);
-    const payloadExp = payloadIat + expiresIn;
+    const payloadExp = payloadIat + expiresInSeconds;
     const payLoad: payload = {
         iss: "chirpy",
         sub: userID,
@@ -25,13 +27,17 @@ export function makeJWT(userID: string, expiresIn: number, secret: string): stri
 }
 
 export function validateJWT(tokenString: string, secret: string): string {
-    const verifyOutput = jwt.verify(tokenString, secret);
-    if (typeof verifyOutput === "string") {
-        return verifyOutput;
-    } else if (verifyOutput.sub === undefined) {
-        throw new Error("JWT validation error.");
-    } else {
-        return verifyOutput.sub;
+    try {
+        const verifyOutput = jwt.verify(tokenString, secret);
+        if (typeof verifyOutput === "string") {
+            return verifyOutput;
+        } else if (verifyOutput.sub === undefined) {
+            throw new NotAuthorizedError("JWT validation error.");
+        } else {
+            return verifyOutput.sub;
+        }
+    } catch (err) {
+        throw new NotAuthorizedError("JWT validation error.");
     }
 }
 
@@ -46,4 +52,8 @@ export function getBearerToken(req: Request): string {
     }
     console.log("Bearer token extracted:", parts[1]);
     return parts[1];
+}
+
+export function makeRefreshToken(): string {
+    return crypto.randomBytes(256 / 8).toString("hex");
 }

@@ -22,6 +22,20 @@
       "when": 1769472726051,
       "tag": "0002_slim_hitman",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1770483176485,
+      "tag": "0003_awesome_vision",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770486407202,
+      "tag": "0004_steady_orphan",
+      "breakpoints": true
     }
   ]
 }
