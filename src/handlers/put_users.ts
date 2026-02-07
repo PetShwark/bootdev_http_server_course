@@ -22,7 +22,8 @@ export async function handlerUpdateUser(req: Request, res: Response, next: NextF
             id: updatedUser.id,
             createdAt: updatedUser.createdAt,
             email: updatedUser.email,
-            updatedAt: updatedUser.updatedAt
+            updatedAt: updatedUser.updatedAt,
+            isChirpyRed: updatedUser.isChirpyRed
         }
         res.status(200).send(JSON.stringify(responseUser));
     } catch (err) {

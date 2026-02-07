@@ -16,6 +16,7 @@ import { handlerRefreshJwt } from "./handlers/post_refresh.js";
 import { handlerRevokeRefreshToken } from "./handlers/post_revoke.js";
 import { handlerUpdateUser } from "./handlers/put_users.js";
 import { handlerDeleteChirp } from "./handlers/delete_chirps.js";
+import { postPolkaWebhooks } from "./handlers/post_polka_webhooks.js";
 
 
 const app = express();
@@ -38,10 +39,11 @@ app.get("/api/chirps", handlerGetChirps);
 app.get("/api/chirps/:chirpId", handlerGetChirp);
 app.post("/admin/reset", handlerMetricsReset);
 app.post("/api/chirps", handlerChirps);
-app.post("/api/users", handlerUsers);
 app.post("/api/login", handleLogin);
+app.post("/api/polka/webhooks", postPolkaWebhooks);
 app.post("/api/refresh", handlerRefreshJwt);
 app.post("/api/revoke", handlerRevokeRefreshToken);
+app.post("/api/users", handlerUsers);
 app.put("/api/users", handlerUpdateUser);
 
 app.use(middlewareLogResponses);

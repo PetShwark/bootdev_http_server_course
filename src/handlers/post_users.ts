@@ -23,7 +23,8 @@ export async function handlerUsers(req: Request, res: Response, next: NextFuncti
             id: newUser.id,
             createdAt: newUser.createdAt,
             email: newUser.email,
-            updatedAt: newUser.updatedAt
+            updatedAt: newUser.updatedAt,
+            isChirpyRed: newUser.isChirpyRed
         }
         res.status(201).send(JSON.stringify(responseUser));
     } catch (err) {
@@ -64,7 +65,8 @@ export async function handleLogin(req: Request, res: Response, next: NextFunctio
                 updatedAt: selectedUser.updatedAt,
                 email: selectedUser.email,
                 token: jwt,
-                refreshToken: refreshToken
+                refreshToken: refreshToken,
+                isChirpyRed: selectedUser.isChirpyRed
             }
             res.status(200).send(JSON.stringify(responseUser));
         } else {

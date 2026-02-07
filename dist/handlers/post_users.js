@@ -18,7 +18,8 @@ export async function handlerUsers(req, res, next) {
             id: newUser.id,
             createdAt: newUser.createdAt,
             email: newUser.email,
-            updatedAt: newUser.updatedAt
+            updatedAt: newUser.updatedAt,
+            isChirpyRed: newUser.isChirpyRed
         };
         res.status(201).send(JSON.stringify(responseUser));
     }
@@ -60,7 +61,8 @@ export async function handleLogin(req, res, next) {
                 updatedAt: selectedUser.updatedAt,
                 email: selectedUser.email,
                 token: jwt,
-                refreshToken: refreshToken
+                refreshToken: refreshToken,
+                isChirpyRed: selectedUser.isChirpyRed
             };
             res.status(200).send(JSON.stringify(responseUser));
         }
