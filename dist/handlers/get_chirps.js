@@ -1,8 +1,16 @@
-import { selectChirps, selectChirp } from "../lib/db/queries/chirps.js";
+import { selectChirps, selectChirp, selectChirpsByAuthorId } from "../lib/db/queries/chirps.js";
 import { NotFoundError } from "../middleware/mw_error_defs.js";
 export async function handlerGetChirps(req, res, next) {
     try {
-        const chirps = await selectChirps();
+        const authorId = req.query.authorId;
+        const sort = req.query.sort;
+        const ascending = sort !== "desc";
+        if (typeof authorId === "string") {
+            const chirps = await selectChirpsByAuthorId(authorId, ascending);
+            res.status(200).send(JSON.stringify(chirps));
+            return;
+        }
+        const chirps = await selectChirps(ascending);
         res.status(200).send(JSON.stringify(chirps));
     }
     catch (err) {
