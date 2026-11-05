@@ -2,7 +2,7 @@ import { hash, verify } from "argon2";
 import { Request } from "express";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { NotAuthorizedError } from "../../middleware/mw_error_defs.js";
+import { BadRequestError, NotAuthorizedError } from "../../middleware/mw_error_defs.js";
 
 export type payload = Pick<jwt.JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -41,17 +41,21 @@ export function validateJWT(tokenString: string, secret: string): string {
     }
 }
 
-export function getBearerToken(req: Request): string {
-    const authHeader = req.get("Authorization");
-    if (!authHeader) {
-        throw new NotAuthorizedError("No Authorization header found.");
+export function extractBearerToken(authorization: string | undefined): string {
+    if (!authorization) {
+        throw new BadRequestError("No Authorization header found.");
     }
-    const parts = authHeader.split(" ");
+    const parts = authorization.trim().split(" ");
     if (parts.length !== 2 || parts[0] !== "Bearer") {
-        throw new NotAuthorizedError("Invalid Authorization header format.");
+        throw new BadRequestError("Invalid Authorization header format.");
     }
     console.log("Bearer token extracted:", parts[1]);
     return parts[1].trim();
+}
+
+export function getBearerToken(req: Request): string {
+    const authHeader = req.get("Authorization");
+    return extractBearerToken(authHeader);
 }
 
 export function makeRefreshToken(): string {

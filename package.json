@@ -1,7 +1,7 @@
 {
-  "name": "http_server_course",
+  "name": "bootdev_http_server_course",
   "version": "1.0.0",
-  "description": "",
+  "description": "## What is this?",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -10,22 +10,30 @@
     "dev": "npx tsc && node dist/index.js",
     "test": "vitest --run"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetShwark/bootdev_http_server_course.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "argon2": "^0.44.0",
-    "drizzle-orm": "^0.45.1",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "postgres": "^3.4.8"
+  "bugs": {
+    "url": "https://github.com/PetShwark/bootdev_http_server_course/issues"
   },
+  "homepage": "https://github.com/PetShwark/bootdev_http_server_course#readme",
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.0.9",
-    "drizzle-kit": "^0.31.8",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@types/node": "^26.6.6",
+    "drizzle-kit": "^0.31.11",
+    "typescript": "^7.0.2",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "argon2": "^0.45.2",
+    "drizzle-orm": "^0.45.4",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "postgres": "^4.0.0"
   }
 }

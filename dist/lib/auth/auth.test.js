@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { makeJWT, validateJWT, hashPassword, checkPasswordHash, getBearerToken } from "./auth.js";
+import { makeJWT, validateJWT, hashPassword, checkPasswordHash, extractBearerToken, getBearerToken } from "./auth.js";
 describe("Password Hashing", () => {
     const password1 = "correctPassword123!";
     const password2 = "anotherPassword456!";
@@ -53,5 +53,17 @@ describe("MakeJWT Testing", () => {
             }
         };
         expect(() => getBearerToken(mockRequest)).toThrow();
+    });
+    it("should throw an error for malformed Authorization header text", async () => {
+        const badAuthHeader = " TOKEN_STRING ";
+        expect(() => extractBearerToken(badAuthHeader)).toThrow();
+    });
+    it("should throw an error for missing Authorization header text", async () => {
+        const missingAuthHeader = undefined;
+        expect(() => extractBearerToken(missingAuthHeader)).toThrow();
+    });
+    it("show return TOKEN_STRING when extracting bearer token", async () => {
+        const authHeader = " Bearer TOKEN_STRING ";
+        expect(extractBearerToken(authHeader)).eq("TOKEN_STRING");
     });
 });

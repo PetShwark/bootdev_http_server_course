@@ -1,7 +1,7 @@
 import { hash, verify } from "argon2";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { NotAuthorizedError } from "../../middleware/mw_error_defs.js";
+import { BadRequestError, NotAuthorizedError } from "../../middleware/mw_error_defs.js";
 export async function hashPassword(password) {
     return await hash(password);
 }
@@ -36,17 +36,20 @@ export function validateJWT(tokenString, secret) {
         throw new NotAuthorizedError("JWT validation error.");
     }
 }
-export function getBearerToken(req) {
-    const authHeader = req.get("Authorization");
-    if (!authHeader) {
-        throw new NotAuthorizedError("No Authorization header found.");
+export function extractBearerToken(authorization) {
+    if (!authorization) {
+        throw new BadRequestError("No Authorization header found.");
     }
-    const parts = authHeader.split(" ");
+    const parts = authorization.trim().split(" ");
     if (parts.length !== 2 || parts[0] !== "Bearer") {
-        throw new NotAuthorizedError("Invalid Authorization header format.");
+        throw new BadRequestError("Invalid Authorization header format.");
     }
     console.log("Bearer token extracted:", parts[1]);
     return parts[1].trim();
+}
+export function getBearerToken(req) {
+    const authHeader = req.get("Authorization");
+    return extractBearerToken(authHeader);
 }
 export function makeRefreshToken() {
     return crypto.randomBytes(256 / 8).toString("hex");
